@@ -32,7 +32,6 @@ public class UserMealsUtil {
 
     public static List<UserMealWithExcess> filteredByCycles(List<UserMeal> meals, LocalTime startTime,
                                                             LocalTime endTime, int caloriesPerDay) {
-
         Map<LocalDate, Integer> sumCaloriesPerDayMap = new HashMap<>();
         for (UserMeal userMeal : meals) {
             sumCaloriesPerDayMap.merge(userMeal.getLocalDate(), userMeal.getCalories(), Integer::sum);
