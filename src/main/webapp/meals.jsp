@@ -12,6 +12,8 @@
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h2>Meals</h2>
+<a href="?action=add">Add meal</a>
+<p>
 <table>
     <tr>
         <th>Date</th>
@@ -20,20 +22,15 @@
         <th></th>
         <th></th>
     </tr>
-    <c:forEach items="${mealsToList}" var="mealTo">
+    <c:forEach items="${mealToList}" var="mealTo">
         <jsp:useBean id="mealTo" type="ru.javawebinar.topjava.model.MealTo"/>
-        <c:if test="${mealTo.excess==true}">
-            <c:set var="font_color" value="red"/>
-        </c:if>
-        <c:if test="${mealTo.excess==false}">
-            <c:set var="font_color" value="green"/>
-        </c:if>
-        <tr>
-            <td class="${font_color}">${fn:replace(mealTo.dateTime, 'T', ' ')}</td>
-            <td class="${font_color}">${mealTo.description}</td>
-            <td class="${font_color}">${mealTo.calories}</td>
-            <td>Update</td>
-            <td>Delete</td>
+        <c:set var="font_color" value="${mealTo.excess ? 'red' : 'green'}"/>
+        <tr class="${font_color}">
+            <td>${fn:replace(mealTo.dateTime, 'T', ' ')}</td>
+            <td>${mealTo.description}</td>
+            <td>${mealTo.calories}</td>
+            <td><a href="?id=${mealTo.id}&action=update">Update</a></td>
+            <td><a href="?id=${mealTo.id}&action=delete">Delete</a></td>
         </tr>
     </c:forEach>
 </table>
