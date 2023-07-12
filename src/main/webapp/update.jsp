@@ -7,12 +7,12 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="css/style.css">
-    <title>Meal</title>
+    <title>Edit meal</title>
 </head>
 <body>
 <h3><a href="index.html">Home</a></h3>
 <hr>
-<h2>Edit meal</h2>
+<h2>${currentAction} meal</h2>
 <form method="post" enctype="application/x-www-form-urlencoded">
     <input type="hidden" name="id" value="${meal.id}">
     <dl class="description-list">
@@ -33,6 +33,5 @@
     <button type="submit">Save</button>
     <button type="button" onclick="window.history.back()">Cancel</button>
 </form>
-</table>
 </body>
 </html>

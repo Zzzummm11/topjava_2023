@@ -1,64 +1,35 @@
 package ru.javawebinar.topjava.storage;
 
-import ru.javawebinar.topjava.exeption.NotExistStorageException;
 import ru.javawebinar.topjava.model.Meal;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class MealsInMemoryRepository implements Storage {
+public class MealsInMemoryRepository implements MealsRepository {
 
-    private final List<Meal> list = Collections.synchronizedList(new ArrayList<>());
-
-    private Meal findById(final int id) {
-        synchronized (list) {
-            for (Meal meal : list) {
-                if (meal.getId() == id) {
-                    return meal;
-                }
-            }
-            return null;
-        }
-    }
+    private final Map<Integer, Meal> mealsRepository = new ConcurrentHashMap<>();
 
     @Override
-    public void save(final Meal meal) {
-        synchronized (list) {
-            Meal existingMeal = findById(meal.getId());
-            if (existingMeal != null) {
-                list.remove(existingMeal);
-            }
-            list.add(meal);
-        }
+    public Meal save(final Meal meal) {
+        mealsRepository.put(meal.getId(), meal);
+        return meal;
     }
 
     @Override
     public Meal get(final int id) {
-        synchronized (list) {
-            Meal meal = findById(id);
-            if (meal == null) {
-                throw new NotExistStorageException(id);
-            }
-            return meal;
-        }
+        return mealsRepository.get(id);
     }
 
     @Override
     public void delete(final int id) {
-        synchronized (list) {
-            Meal meal = findById(id);
-            if (meal == null) {
-                throw new NotExistStorageException(id);
-            }
-            list.remove(meal);
-        }
+        mealsRepository.remove(id);
     }
 
     @Override
-    public List<Meal> convertToList() {
-        synchronized (list) {
-            return list;
-        }
+    public List<Meal> getAll() {
+        return new ArrayList<>(mealsRepository.values());
     }
+
 }
