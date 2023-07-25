@@ -24,8 +24,11 @@ public class InMemoryMealRepository implements MealRepository {
     private final AtomicInteger counter = new AtomicInteger(0);
 
     {
-        for (Meal meal : MealsUtil.meals) {
+        for (Meal meal : MealsUtil.mealsAdmin) {
             save(meal, 1);
+        }
+        for (Meal meal : MealsUtil.mealsUser) {
+            save(meal, 2);
         }
     }
 
@@ -64,6 +67,7 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     private Collection<Meal> getAllByPredicate(Predicate<Meal> filter, int userId) {
+        mainRepository.computeIfAbsent(userId, mealsMap -> new ConcurrentHashMap<>());
         return mainRepository.get(userId).values().stream()
                 .filter(filter)
                 .sorted(Comparator.comparing(Meal::getDate).reversed())

@@ -14,15 +14,23 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import static ru.javawebinar.topjava.web.SecurityUtil.ADMIN;
+import static ru.javawebinar.topjava.web.SecurityUtil.USER;
+
 @Repository
 public class InMemoryUserRepository implements UserRepository {
 
     public static final Comparator<User> COMPARE_USER = Comparator.comparing(User::getName)
             .thenComparing(User::getEmail);
     private static final Logger log = LoggerFactory.getLogger(InMemoryUserRepository.class);
+
     private final Map<Integer, User> repository = new ConcurrentHashMap<>();
     private final AtomicInteger counter = new AtomicInteger(0);
 
+    {
+        save(ADMIN);
+        save(USER);
+    }
 
     @Override
     public User save(User user) {

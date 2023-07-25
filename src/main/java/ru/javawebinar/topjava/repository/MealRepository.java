@@ -6,16 +6,13 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 
 public interface MealRepository {
-    // null if updated meal does not belong to userId
+
     Meal save(Meal meal, int userId);
 
-    // false if meal does not belong to userId
     boolean delete(int id, int userId);
 
-    // null if meal does not belong to userId
     Meal get(int id, int userId);
 
-    // ORDERED dateTime desc
     Collection<Meal> getAll(int userId);
 
     Collection<Meal> getAllFiltered(LocalDateTime startTime, LocalDateTime endTime, int userId);
