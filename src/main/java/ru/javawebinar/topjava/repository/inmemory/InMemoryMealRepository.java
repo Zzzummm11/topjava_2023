@@ -9,7 +9,7 @@ import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -68,13 +68,14 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     private List<Meal> getAllByPredicate(Predicate<Meal> filter, int userId) {
-        if (mainRepository.get(userId) != null) {
-            return mainRepository.get(userId).values().stream()
+        Map<Integer, Meal> userMeals = mainRepository.get(userId);
+        if (userMeals != null) {
+            return userMeals.values().stream()
                     .filter(filter)
                     .sorted(Comparator.comparing(Meal::getDateTime).reversed())
                     .collect(Collectors.toList());
         } else {
-            return new ArrayList<>();
+            return Collections.emptyList();
         }
     }
 }
