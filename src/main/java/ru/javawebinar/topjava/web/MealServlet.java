@@ -18,6 +18,9 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
+import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalDate;
+import static ru.javawebinar.topjava.util.DateTimeUtil.parseLocalTime;
+
 public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
     private ConfigurableApplicationContext appCtx;
@@ -67,9 +70,8 @@ public class MealServlet extends HttpServlet {
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
                 break;
-            case "all":
-            default:
-                log.info("getAll");
+            case "filter":
+                log.info("filter");
                 LocalDate startDate = parseLocalDate(request.getParameter("startDate"));
                 LocalTime startTime = parseLocalTime(request.getParameter("startTime"));
                 LocalDate endDate = parseLocalDate(request.getParameter("endDate"));
@@ -77,23 +79,19 @@ public class MealServlet extends HttpServlet {
                 request.setAttribute("meals", mealRestController.getAllFiltered(startDate, startTime, endDate, endTime));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
+            case "all":
+            default:
+                log.info("getAll");
+                request.setAttribute("meals", mealRestController.getAll());
+                request.getRequestDispatcher("/meals.jsp").forward(request, response);
+                break;
         }
     }
-
-    private LocalDate parseLocalDate(String localDate) {
-        return localDate != null && !Objects.equals(localDate, "") ? LocalDate.parse(localDate) : null;
-    }
-
-    private LocalTime parseLocalTime(String localTime) {
-        return localTime != null && !Objects.equals(localTime, "") ? LocalTime.parse(localTime) : null;
-    }
-
 
     @Override
     public void destroy() {
         appCtx.close();
     }
-
 
     private int getId(HttpServletRequest request) {
         String paramId = Objects.requireNonNull(request.getParameter("id"));

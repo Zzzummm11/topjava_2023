@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class MealsUtil {
     public static final int DEFAULT_CALORIES_PER_DAY = 2000;
 
-    public static final List<Meal> mealsAdmin = Arrays.asList(
+    public static final List<Meal> adminMeals = Arrays.asList(
             new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак_admin", 500),
             new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед_admin", 1000),
             new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0), "Ужин_admin", 500),
@@ -26,7 +26,7 @@ public class MealsUtil {
             new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед_admin", 500),
             new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин_admin", 410)
     );
-    public static final List<Meal> mealsUser = Arrays.asList(
+    public static final List<Meal> userMeals = Arrays.asList(
             new Meal(LocalDateTime.of(2023, Month.JANUARY, 30, 10, 0), "Завтрак_user", 500),
             new Meal(LocalDateTime.of(2023, Month.JANUARY, 30, 13, 0), "Обед_user", 1000),
             new Meal(LocalDateTime.of(2023, Month.JANUARY, 30, 20, 0), "Ужин_user", 500)

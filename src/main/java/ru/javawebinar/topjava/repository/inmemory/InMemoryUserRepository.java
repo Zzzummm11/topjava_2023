@@ -19,11 +19,9 @@ import static ru.javawebinar.topjava.web.SecurityUtil.USER;
 
 @Repository
 public class InMemoryUserRepository implements UserRepository {
-
-    public static final Comparator<User> COMPARE_USER = Comparator.comparing(User::getName)
+    private static final Comparator<User> USER_COMPARATOR = Comparator.comparing(User::getName)
             .thenComparing(User::getEmail);
     private static final Logger log = LoggerFactory.getLogger(InMemoryUserRepository.class);
-
     private final Map<Integer, User> repository = new ConcurrentHashMap<>();
     private final AtomicInteger counter = new AtomicInteger(0);
 
@@ -40,7 +38,7 @@ public class InMemoryUserRepository implements UserRepository {
             repository.put(user.getId(), user);
             return user;
         }
-        return repository.computeIfPresent(user.getId(), (id, oldMeal) -> user);
+        return repository.computeIfPresent(user.getId(), (id, oldUser) -> user);
 
     }
 
@@ -68,6 +66,6 @@ public class InMemoryUserRepository implements UserRepository {
     @Override
     public List<User> getAll() {
         log.info("getAll");
-        return repository.values().stream().sorted(COMPARE_USER).collect(Collectors.toList());
+        return repository.values().stream().sorted(USER_COMPARATOR).collect(Collectors.toList());
     }
 }

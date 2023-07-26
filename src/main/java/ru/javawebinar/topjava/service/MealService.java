@@ -11,7 +11,6 @@ import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
 public class MealService {
-
     private final MealRepository repository;
 
     public MealService(final MealRepository repository) {
@@ -31,11 +30,11 @@ public class MealService {
     }
 
     public List<Meal> getAll(int userId) {
-        return (List<Meal>) repository.getAll(userId);
+        return repository.getAll(userId);
     }
 
     public List<Meal> getAllFiltered(LocalDateTime startDate, LocalDateTime endDate, int userId) {
-        return (List<Meal>) repository.getAllFiltered(startDate, endDate, userId);
+        return repository.getAllFiltered(startDate, endDate, userId);
     }
 
     public void update(Meal meal, int userId) {
