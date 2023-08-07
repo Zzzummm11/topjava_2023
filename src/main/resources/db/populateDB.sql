@@ -1,6 +1,3 @@
-DROP INDEX IF EXISTS idx_unique_meals_user_datetime;
-DROP INDEX IF EXISTS idx_meals_id_user_id;
-
 DELETE
 FROM meals;
 
@@ -28,8 +25,8 @@ VALUES ('2023-01-29 10:00:00', 'Admin breakfast', 500, 100001),
        ('2023-01-31 00:00:00', 'Border meals', 100, 100001),
        ('2023-01-31 10:00:00', 'Admin breakfast', 1000, 100001),
        ('2023-01-31 13:00:00', 'Admin lunch', 500, 100001),
-       ('2023-02-01 10:00:00', 'Admin breakfast', 410, 100001);
+       ('2023-02-01 10:00:00', 'Admin breakfast', 410, 100001),
+       ('2023-01-30 10:00:00', 'User breakfast', 120, 100000),
+       ('2023-01-30 13:00:00', 'User lunch', 300, 100000),
+       ('2023-01-30 20:00:00', 'User dinner', 200, 100000);
 
-CREATE UNIQUE INDEX idx_unique_meals_user_datetime ON meals (user_id, date_time);
-
-CREATE INDEX idx_meals_id_user_id ON meals (id, user_id);

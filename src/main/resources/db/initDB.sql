@@ -1,3 +1,5 @@
+DROP INDEX IF EXISTS idx_unique_meals_user_datetime;
+
 DROP TABLE IF EXISTS meals;
 DROP TABLE IF EXISTS user_role;
 DROP TABLE IF EXISTS users;
@@ -34,4 +36,6 @@ CREATE TABLE meals
     user_id     INTEGER   NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
+
+CREATE UNIQUE INDEX idx_unique_meals_user_datetime ON meals (user_id, date_time);
 
