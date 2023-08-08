@@ -11,6 +11,8 @@ Java Enterprise Online Project
 
     Старинная китайская поговорка
 
+## <a href="https://app.codacy.com/gh/Zzzummm11/topjava/dashboard">Проверка кода в codacy.com</a>
+
 ## <a href="description.md">Описание и план проекта</a>
 ### <a href="http://javaops-demo.ru/topjava" target=_blank>Демо разрабатываемого приложения</a>
 ### [Изменения проекта (Release Notes)](ReleaseNotes.md)
