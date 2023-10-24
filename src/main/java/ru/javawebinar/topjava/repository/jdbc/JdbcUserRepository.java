@@ -9,10 +9,11 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 
-import java.util.List;
+import java.util.*;
 
 @Repository
 @Transactional(readOnly = true)
@@ -50,6 +51,7 @@ public class JdbcUserRepository implements UserRepository {
                 """, parameterSource) == 0) {
             return null;
         }
+        addOrUpdateRoles(user);
         return user;
     }
 
@@ -62,18 +64,73 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public User get(int id) {
         List<User> users = jdbcTemplate.query("SELECT * FROM users WHERE id=?", ROW_MAPPER, id);
-        return DataAccessUtils.singleResult(users);
+        return setRoles(DataAccessUtils.singleResult(users));
     }
 
     @Override
     public User getByEmail(String email) {
 //        return jdbcTemplate.queryForObject("SELECT * FROM users WHERE email=?", ROW_MAPPER, email);
         List<User> users = jdbcTemplate.query("SELECT * FROM users WHERE email=?", ROW_MAPPER, email);
-        return DataAccessUtils.singleResult(users);
+        return setRoles(DataAccessUtils.singleResult(users));
     }
+
+    //    @Override
+//    public List<User> getAll() {
+//        List<User> users = jdbcTemplate.query("""
+//                SELECT *
+//                FROM users
+//                LEFT JOIN user_role
+//                ON users.id = user_role.user_id
+//                ORDER BY name, email
+//                """, ROW_MAPPER);
+//        return users;
+//    }
 
     @Override
     public List<User> getAll() {
-        return jdbcTemplate.query("SELECT * FROM users ORDER BY name, email", ROW_MAPPER);
+        List<User> users = jdbcTemplate.query("SELECT * FROM users ORDER BY name, email", ROW_MAPPER);
+
+        Map<Integer, Set<Role>> map = new HashMap<>();
+        jdbcTemplate.query("SELECT * FROM user_role", rs -> {
+            map.computeIfAbsent(rs.getInt("user_id"), userId -> EnumSet.noneOf(Role.class))
+                    .add(Role.valueOf(rs.getString("role")));
+        });
+        users.forEach(u -> u.setRoles(map.get(u.getId())));
+        return users;
+    }
+
+    public void addOrUpdateRoles(User user) {
+        Set<Role> roles = user.getRoles();
+        if (roles != null) {
+            deleteRoles(user);
+            jdbcTemplate.batchUpdate("INSERT INTO user_role (user_id, role) VALUES (?, ?)", roles, roles.size(),
+                    (ps, role) -> {
+                        ps.setInt(1, user.id());
+                        ps.setString(2, role.name());
+                    });
+        }
+    }
+
+    public void deleteRoles(User user) {
+        jdbcTemplate.update("DELETE FROM user_role WHERE user_id=?", user.getId());
+    }
+
+    public User setRoles(User user) {
+        if (user != null) {
+            List<Role> roles = jdbcTemplate.query(
+                    "SELECT role FROM user_role WHERE user_id = ?",
+                    (rs) -> {
+                        List<Role> extractedRoles = new ArrayList<>();
+                        while (rs.next()) {
+                            String role = rs.getString("role");
+                            extractedRoles.add(Role.valueOf(role));
+                        }
+                        return extractedRoles;
+                    },
+                    user.getId()
+            );
+            user.setRoles(roles);
+        }
+        return user;
     }
 }
