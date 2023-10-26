@@ -42,8 +42,8 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     @Transactional
     public User save(User user) {
-        BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(user);
         validate(user);
+        BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(user);
         if (user.isNew()) {
             Number newKey = insertUser.executeAndReturnKey(parameterSource);
             user.setId(newKey.intValue());
@@ -53,6 +53,7 @@ public class JdbcUserRepository implements UserRepository {
                 """, parameterSource) == 0) {
             return null;
         }
+        deleteRoles(user);
         addOrUpdateRoles(user);
         return user;
     }
@@ -76,35 +77,21 @@ public class JdbcUserRepository implements UserRepository {
         return setRoles(DataAccessUtils.singleResult(users));
     }
 
-    //    @Override
-//    public List<User> getAll() {
-//        List<User> users = jdbcTemplate.query("""
-//                SELECT *
-//                FROM users
-//                LEFT JOIN user_role
-//                ON users.id = user_role.user_id
-//                ORDER BY name, email
-//                """, ROW_MAPPER);
-//        return users;
-//    }
-
     @Override
     public List<User> getAll() {
         List<User> users = jdbcTemplate.query("SELECT * FROM users ORDER BY name, email", ROW_MAPPER);
-
-        Map<Integer, Set<Role>> map = new HashMap<>();
+        Map<Integer, Set<Role>> userRoles = new HashMap<>();
         jdbcTemplate.query("SELECT * FROM user_role", rs -> {
-            map.computeIfAbsent(rs.getInt("user_id"), userId -> EnumSet.noneOf(Role.class))
+            userRoles.computeIfAbsent(rs.getInt("user_id"), userId -> EnumSet.noneOf(Role.class))
                     .add(Role.valueOf(rs.getString("role")));
         });
-        users.forEach(u -> u.setRoles(map.get(u.getId())));
+        users.forEach(u -> u.setRoles(userRoles.get(u.getId())));
         return users;
     }
 
     public void addOrUpdateRoles(User user) {
         Set<Role> roles = user.getRoles();
         if (roles != null) {
-            deleteRoles(user);
             jdbcTemplate.batchUpdate("INSERT INTO user_role (user_id, role) VALUES (?, ?)", roles, roles.size(),
                     (ps, role) -> {
                         ps.setInt(1, user.id());
@@ -119,18 +106,7 @@ public class JdbcUserRepository implements UserRepository {
 
     public User setRoles(User user) {
         if (user != null) {
-            List<Role> roles = jdbcTemplate.query(
-                    "SELECT role FROM user_role WHERE user_id = ?",
-                    (rs) -> {
-                        List<Role> extractedRoles = new ArrayList<>();
-                        while (rs.next()) {
-                            String role = rs.getString("role");
-                            extractedRoles.add(Role.valueOf(role));
-                        }
-                        return extractedRoles;
-                    },
-                    user.getId()
-            );
+            List<Role> roles = jdbcTemplate.queryForList("SELECT role FROM user_role WHERE user_id = ?", Role.class, user.getId());
             user.setRoles(roles);
         }
         return user;
