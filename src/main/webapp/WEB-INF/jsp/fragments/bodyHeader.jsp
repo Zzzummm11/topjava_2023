@@ -2,7 +2,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <header>
-    <a href="${pageContext.request.contextPath}"><fmt:message key="app.home"/></a> |
-    <a href="${pageContext.request.contextPath}/meals"><fmt:message key="app.title"/></a> |
-    <a href="${pageContext.request.contextPath}/users"><fmt:message key="user.title"/></a>
+    <a href=""><fmt:message key="app.home"/></a> |
+    <a href="meals"><fmt:message key="app.title"/></a> |
+    <a href="users"><fmt:message key="user.title"/></a>
 </header>
