@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
@@ -93,7 +94,7 @@ public class JdbcUserRepository implements UserRepository {
 
     public void addOrUpdateRoles(User user) {
         Set<Role> roles = user.getRoles();
-        if (roles != null && !roles.isEmpty()) {
+        if (!CollectionUtils.isEmpty(roles)) {
             jdbcTemplate.batchUpdate("INSERT INTO user_role (user_id, role) VALUES (?, ?)", roles, roles.size(),
                     (ps, role) -> {
                         ps.setInt(1, user.id());
