@@ -99,8 +99,6 @@ public abstract class AbstractMealServiceTest extends AbstractServiceTest {
 
     @Test
     public void getBetweenWithNullDates() {
-        System.out.println(service.getBetweenInclusive(null, null, USER_ID));
-        System.out.println(meals);
         MEAL_MATCHER.assertMatch(service.getBetweenInclusive(null, null, USER_ID), meals);
     }
 

@@ -11,7 +11,7 @@ CREATE TABLE users
     name             VARCHAR                           NOT NULL,
     email            VARCHAR                           NOT NULL,
     password         VARCHAR                           NOT NULL,
-    registered       TIMESTAMP           DEFAULT now() NOT NULL,
+    registered       TIMESTAMP           DEFAULT NOW() NOT NULL,
     enabled          BOOL                DEFAULT TRUE  NOT NULL,
     calories_per_day INTEGER             DEFAULT 2000  NOT NULL
 );
