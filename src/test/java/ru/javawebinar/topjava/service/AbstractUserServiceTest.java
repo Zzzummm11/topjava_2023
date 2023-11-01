@@ -1,6 +1,5 @@
 package ru.javawebinar.topjava.service;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
@@ -28,13 +27,13 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
 //    @Autowired(required = false)
 //    protected JpaUtil jpaUtil;
 
-    @Before
-    public void setup() {
-        cacheManager.getCache("users").clear();
+//    @Before
+//    public void setup() {
+//        cacheManager.getCache("users").clear();
 //        if (env.acceptsProfiles(Profiles.of(JPA, DATAJPA))) {
 //            jpaUtil.clear2ndLevelHibernateCache();
 //        }
-    }
+//    }
 
     @Test
     public void create() {
