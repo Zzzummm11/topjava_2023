@@ -7,8 +7,8 @@
 
     <bean class="ru.javawebinar.topjava.web.json.JacksonObjectMapper" id="objectMapper" factory-method="getMapper"/>
 
-    <bean id="customDateFormatter" class="ru.javawebinar.topjava.util.CustomDateFormatter"/>
-    <bean id="customTimeFormatter" class="ru.javawebinar.topjava.util.CustomTimeFormatter"/>
+    <bean id="customDateFormatter" class="ru.javawebinar.topjava.util.formatter.CustomDateFormatter"/>
+    <bean id="customTimeFormatter" class="ru.javawebinar.topjava.util.formatter.CustomTimeFormatter"/>
 
     <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
         <property name="formatters">
@@ -60,6 +60,5 @@
           p:defaultEncoding="UTF-8">
         <property name="basenames" value="file:///#{systemEnvironment[TOPJAVA_ROOT]}/config/messages/app"/>
         <property name="fallbackToSystemLocale" value="false"/>
-        <property name="useCodeAsDefaultMessage" value="true"/>
     </bean>
 </beans>
