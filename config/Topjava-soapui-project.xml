@@ -727,6 +727,38 @@
                 </con:request>
             </con:method>
         </con:resource>
+        <con:resource name="with-meals" path="/topjava/rest/profile/with-meals"
+                      id="e3c3183a-a817-4548-a961-9d4b9aa68a90">
+            <con:settings/>
+            <con:parameters/>
+            <con:method name="Method 1" id="3a5a53b1-e69d-4815-9144-c1883e157b7e" method="GET">
+                <con:settings/>
+                <con:parameters/>
+                <con:representation type="RESPONSE">
+                    <con:mediaType>application/json;charset=UTF-8</con:mediaType>
+                    <con:status>200</con:status>
+                    <con:params/>
+                    <con:element xmlns:with="http://localhost/topjava/rest/admin/users/100001/with-meals">
+                        with:Response
+                    </con:element>
+                </con:representation>
+                <con:request name="Request 1" id="032c2220-c34a-42e1-8222-2266d52e43ca" mediaType="application/json">
+                    <con:settings>
+                        <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/>
+                        </con:setting>
+                    </con:settings>
+                    <con:endpoint>http://localhost:8080</con:endpoint>
+                    <con:request/>
+                    <con:originalUri>http://localhost/topjava/rest/admin/users/100001/with-meals</con:originalUri>
+                    <con:credentials>
+                        <con:authType>No Authorization</con:authType>
+                    </con:credentials>
+                    <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+                    <con:jmsPropertyConfig/>
+                    <con:parameters/>
+                </con:request>
+            </con:method>
+        </con:resource>
     </con:interface>
     <con:properties/>
     <con:wssContainer/>
