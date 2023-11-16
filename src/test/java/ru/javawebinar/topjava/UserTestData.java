@@ -28,10 +28,13 @@ public class UserTestData {
     public static final User user = new User(USER_ID, "User", "user@yandex.ru", "password", Role.USER);
     public static final User admin = new User(ADMIN_ID, "Admin", "admin@gmail.com", "admin", Role.ADMIN, Role.USER);
     public static final User guest = new User(GUEST_ID, "Guest", "guest@gmail.com", "guest");
+    public static final User expectedUser = new User(UserTestData.user);
+    public static final User expectedAdmin = new User(UserTestData.admin);
+
 
     static {
-        user.setMeals(MealTestData.meals);
-        admin.setMeals(List.of(MealTestData.adminMeal2, MealTestData.adminMeal1));
+        expectedUser.setMeals(MealTestData.meals);
+        expectedAdmin.setMeals(List.of(MealTestData.adminMeal2, MealTestData.adminMeal1));
     }
 
     public static User getNew() {
