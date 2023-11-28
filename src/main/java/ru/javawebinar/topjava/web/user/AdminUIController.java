@@ -8,6 +8,8 @@ import ru.javawebinar.topjava.model.User;
 
 import java.util.List;
 
+import static java.lang.Boolean.parseBoolean;
+
 @RestController
 @RequestMapping(value = "/admin/users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminUIController extends AbstractUserController {
@@ -31,5 +33,11 @@ public class AdminUIController extends AbstractUserController {
                        @RequestParam String email,
                        @RequestParam String password) {
         super.create(new User(null, name, email, password, Role.USER));
+    }
+
+    @PostMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void enable(@PathVariable int id, @RequestParam String enabled) {
+        super.enable(parseBoolean(enabled), id);
     }
 }
