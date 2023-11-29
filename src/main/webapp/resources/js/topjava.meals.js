@@ -55,3 +55,8 @@ function applyFilter() {
 function filterTable(data) {
     ctx.datatableApi.clear().rows.add(data).draw();
 }
+
+function clearFilter() {
+    $("#filter :input").val("");
+    updateTable();
+}
