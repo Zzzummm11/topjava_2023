@@ -51,7 +51,7 @@ function enable(checkbox, userId) {
     $.ajax({
         url: userAjaxUrl + userId,
         type: "POST",
-        data: {enabled: "enabled"}
+        data: {enabled: enabled}
     }).done(function () {
         // updateTable();
         checkbox.closest("tr").attr("data-user-enabled", enabled)
