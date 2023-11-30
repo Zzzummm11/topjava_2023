@@ -1,7 +1,14 @@
 const mealAjaxUrl = "profile/meals/";
 
 const ctx = {
-    ajaxUrl: mealAjaxUrl
+    ajaxUrl: mealAjaxUrl,
+    updateTable: function () {
+        $.ajax({
+            type: "GET",
+            url: mealAjaxUrl + "filter",
+            data: $("#filter").serialize()
+        }).done(drawTable);
+    }
 };
 
 $(function () {
@@ -34,29 +41,14 @@ $(function () {
             "order": [
                 [
                     0,
-                    "asc"
+                    "desc"
                 ]
             ]
         })
     );
 });
 
-function applyFilter() {
-    $.ajax({
-        type: "GET",
-        url: mealAjaxUrl + "filter",
-        data: $("#filter").serialize()
-    }).done(function (data) {
-        filterTable(data)
-        successNoty("Filtered");
-    });
-}
-
-function filterTable(data) {
-    ctx.datatableApi.clear().rows.add(data).draw();
-}
-
 function clearFilter() {
-    $("#filter :input").val("");
-    updateTable();
+    $("#filter")[0].reset();
+    ctx.updateTable();
 }

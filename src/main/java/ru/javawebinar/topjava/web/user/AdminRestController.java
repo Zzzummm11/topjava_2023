@@ -10,8 +10,6 @@ import ru.javawebinar.topjava.model.User;
 import java.net.URI;
 import java.util.List;
 
-import static java.lang.Boolean.parseBoolean;
-
 @RestController
 @RequestMapping(value = AdminRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminRestController extends AbstractUserController {
@@ -64,9 +62,9 @@ public class AdminRestController extends AbstractUserController {
         return super.getWithMeals(id);
     }
 
-    @PostMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void enable(@PathVariable int id, @RequestParam String enabled) {
-        super.enable(parseBoolean(enabled), id);
+    public void enable(@PathVariable int id, @RequestParam boolean enabled) {
+        super.enable(enabled, id);
     }
 }

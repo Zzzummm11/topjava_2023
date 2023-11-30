@@ -2,7 +2,10 @@ const userAjaxUrl = "admin/users/";
 
 // https://stackoverflow.com/a/5064235/548473
 const ctx = {
-    ajaxUrl: userAjaxUrl
+    ajaxUrl: userAjaxUrl,
+    updateTable: function () {
+        $.get(ctx.ajaxUrl, drawTable);
+    }
 };
 
 // $(document).ready(function () {
@@ -51,10 +54,13 @@ function enable(checkbox, userId) {
     $.ajax({
         url: userAjaxUrl + userId,
         type: "POST",
-        data: {enabled: enabled}
-    }).done(function () {
-        // updateTable();
-        checkbox.closest("tr").attr("data-user-enabled", enabled)
-        successNoty(enabled ? "Enabled" : "Disabled");
+        data: {enabled: enabled},
+        success: function () {
+            checkbox.closest("tr").attr("data-user-enabled", enabled)
+            successNoty(enabled ? "Enabled" : "Disabled");
+        },
+        error: function () {
+            checkbox.prop('checked', !enabled);
+        }
     })
 }
