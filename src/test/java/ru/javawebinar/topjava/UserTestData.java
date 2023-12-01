@@ -51,8 +51,8 @@ public class UserTestData {
     }
 
     public static User getDisabled() {
-        User enabled = new User(user);
-        enabled.setEnabled(false);
-        return enabled;
+        User disabled = new User(user);
+        disabled.setEnabled(false);
+        return disabled;
     }
 }

@@ -4,9 +4,7 @@ function makeEditable(datatableApi) {
     ctx.datatableApi = datatableApi;
     form = $('#detailsForm');
     $(".delete").click(function () {
-        if (confirm('Are you sure?')) {
             deleteRow($(this).closest('tr').attr("id"));
-        }
     });
 
     $(document).ajaxError(function (event, jqXHR, options, jsExc) {
@@ -23,13 +21,15 @@ function add() {
 }
 
 function deleteRow(id) {
-    $.ajax({
-        url: ctx.ajaxUrl + id,
-        type: "DELETE"
-    }).done(function () {
-        ctx.updateTable();
-        successNoty("Deleted");
-    });
+    if (confirm('Are you sure?')) {
+        $.ajax({
+            url: ctx.ajaxUrl + id,
+            type: "DELETE"
+        }).done(function () {
+            ctx.updateTable();
+            successNoty("Deleted");
+        });
+    }
 }
 
 function drawTable(data) {
