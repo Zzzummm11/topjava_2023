@@ -20,4 +20,5 @@
     <script src="webjars/datatables/1.13.5/js/jquery.dataTables.min.js" defer></script>
     <script src="webjars/datatables/1.13.5/js/dataTables.bootstrap4.min.js" defer></script>
     <script src="webjars/noty/3.1.4/lib/noty.min.js" defer></script>
+    <script src="https://momentjs.com/downloads/moment.min.js"></script>
 </head>
