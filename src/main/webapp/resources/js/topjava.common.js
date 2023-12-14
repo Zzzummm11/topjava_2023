@@ -23,10 +23,21 @@ function updateRow(id) {
     $("#modalTitle").html(i18n["editTitle"]);
     $.get(ctx.ajaxUrl + id, function (data) {
         $.each(data, function (key, value) {
-            form.find("input[name='" + key + "']").val(value);
+            form.find("input[name='" + key + "']").val(isDateTime(key, value))
         });
         $('#editRow').modal();
     });
+}
+
+function isDateTime(key, value) {
+    if (key === "dateTime") {
+        value = dateTimeFormatter(value);
+    }
+    return value;
+}
+
+function dateTimeFormatter(value) {
+    return moment(value).format('YYYY-MM-DD HH:mm');
 }
 
 function deleteRow(id) {
