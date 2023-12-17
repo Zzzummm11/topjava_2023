@@ -17,14 +17,32 @@ function clearFilter() {
     $.get(mealAjaxUrl, updateTableByData);
 }
 
+let startTime = $('#startTime');
+let endTime = $('#endTime');
+
 $('#startTime, #endTime').datetimepicker({
     datepicker: false,
-    format: 'H:i'
+    format: 'H:i',
+    onShow: function (ct) {
+        this.setOptions({
+            minTime: startTime.val() ? startTime.val() : false,
+            maxTime: endTime.val() ? endTime.val() : false
+        })
+    }
 });
+
+let startDate = $('#startDate');
+let endDate = $('#endDate');
 
 $('#startDate, #endDate').datetimepicker({
     timepicker: false,
-    format: 'd.m.Y'
+    format: 'Y-m-d',
+    onShow: function (ct) {
+        this.setOptions({
+            minDate: startDate.val() ? startDate.val() : false,
+            maxDate: endDate.val() ? endDate.val() : false
+        })
+    }
 });
 
 $('#dateTime').datetimepicker({
@@ -46,16 +64,16 @@ $(function () {
                     "data": "dateTime",
                     "render": function (data, type, row) {
                         if (type === 'display') {
-                            return dateTimeFormatter(data);
+                            return formatDateTime(data);
                         }
                         return data;
                     }
                 },
                 {
-                    "data": "description",
+                    "data": "description"
                 },
                 {
-                    "data": "calories",
+                    "data": "calories"
                 },
                 {
                     "orderable": false,
