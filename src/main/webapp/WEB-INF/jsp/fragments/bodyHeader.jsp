@@ -47,3 +47,7 @@
         </div>
     </div>
 </nav>
+
+<script type="text/javascript">
+    let currentLocale = "${pageContext.response.locale}";
+</script>

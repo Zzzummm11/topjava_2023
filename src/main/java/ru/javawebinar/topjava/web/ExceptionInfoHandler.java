@@ -2,7 +2,6 @@ package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -29,14 +28,13 @@ import static ru.javawebinar.topjava.util.exception.ErrorType.*;
 @RestControllerAdvice(annotations = RestController.class)
 @Order(Ordered.HIGHEST_PRECEDENCE + 5)
 public class ExceptionInfoHandler {
-    private static final String EXCEPTION_DUPLICATE_EMAIL = "exception.duplicate.email";
-    private static final String EXCEPTION_DUPLICATE_DATETIME = "exception.duplicate.datetime";
+    public static final String EXCEPTION_DUPLICATE_EMAIL = "exception.duplicate.email";
+    public static final String EXCEPTION_DUPLICATE_DATETIME = "exception.duplicate.datetime";
     private static final Logger log = LoggerFactory.getLogger(ExceptionInfoHandler.class);
     private static final Map<String, String> CONSTRAINS_I18N_MAP = Map.of(
             "users_unique_email_idx", EXCEPTION_DUPLICATE_EMAIL,
             "meal_unique_user_datetime_idx", EXCEPTION_DUPLICATE_DATETIME);
 
-    @Autowired
     private final MessageSourceAccessor messageSourceAccessor;
 
     public ExceptionInfoHandler(final MessageSourceAccessor messageSourceAccessor) {
@@ -95,8 +93,7 @@ public class ExceptionInfoHandler {
         } else {
             log.warn("{} at request  {}: {}", errorType, req.getRequestURL(), rootCause.toString());
         }
-//        return new ErrorInfo(req.getRequestURL(), errorType, rootCause.toString());
         return new ErrorInfo(req.getRequestURL(), errorType,
-                details.length != 0 ? details : new String[]{rootCause.toString()});
+                details.length != 0 ? details : new String[]{rootCause.getMessage()});
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import ru.javawebinar.topjava.UserTestData;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.service.UserService;
@@ -175,7 +176,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
     @Test
     @Transactional(propagation = Propagation.NEVER)
     void createWithDuplicateEmail() throws Exception {
-        User duplicate = new User(null, "New", "admin@gmail.com", "newPass", 1555, false, new Date(), Collections.singleton(Role.USER));
+        User duplicate = new User(null, "New", UserTestData.admin.getEmail(), "newPass", 1555, false, new Date(), Collections.singleton(Role.USER));
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(admin))
@@ -188,7 +189,7 @@ class AdminRestControllerTest extends AbstractControllerTest {
     @Transactional(propagation = Propagation.NEVER)
     void updateWithDuplicateEmail() throws Exception {
         User duplicate = new User(user);
-        duplicate.setEmail("admin@gmail.com");
+        duplicate.setEmail(UserTestData.admin.getEmail());
         perform(MockMvcRequestBuilders.put(REST_URL + USER_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(admin))

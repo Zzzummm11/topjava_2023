@@ -114,3 +114,5 @@ $(function () {
         format: 'Y-m-d H:i'
     });
 });
+
+$.datetimepicker.setLocale(currentLocale);
